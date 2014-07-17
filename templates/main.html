@@ -1,0 +1,94 @@
+<html>
+  <head>
+	<title>Restor</title>
+	<link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
+	<!--<link rel="stylesheet" href="../static/jquery-ui.css">-->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="../static/style.css">
+	<script src="../static/jquery-1.11.1.min.js"></script>
+	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../static/jquery-ui/jquery-ui.min.js"></script>
+	<script src="../static/jquery-ui.js"></script>
+	<!--<script src="../static/send.js"></script>-->
+
+	<script>
+		$(function () {
+		
+
+			$( "#send1" ).click(function(event) {
+			   event.preventDefault();
+			   $(".jumbotron").css("display","block");
+			   $("#tabs").css("display", "block");
+			   $("#tabs").tabs();
+			});
+
+		});
+	</script>
+  </head>
+  <body>
+	<div id="wrap">
+		<div class="container">
+			<h1> Restor </h1>
+			<fieldset>
+				<legend>Restful Editor</legend>
+			</fieldset>
+			<form class="navbar-form navbar-left"> 
+			  <div class="form-group">
+				  <div class="input-group">
+					<span class="input-group-addon">URL</span>	
+					<input type="text" style="width:700px" class="form-control" name="url" placeholder="Request URL">
+				  </div>
+				  </br></br>
+				  <input style="margin:10px" type="radio" name="method" value="get">GET 
+				  <input style="margin:10px" type="radio" name="method" value="post">POST
+				  <input style="margin:10px" type="radio" name="method" value="put">PUT
+				  <input style="margin:10px" type="radio" name="method" value="patch">PATCH
+				  <input style="margin:10px" type="radio" name="method" value="delete">DELETE
+				  <input style="margin:10px" type="radio" name="method" value="head">HEAD
+				  <input style="margin:10px" type="radio" name="method" value="options">OPTIONS<br/>
+				  <button id="clear" class="btn btn-default navbar-btn" name="clear">Clear</button>
+				  <button id="send1" class="btn btn-default navbar-btn" name="send" >Send</button>
+			  </div>
+		      <div class="jumbotron" style="display:none; padding:20px; max-width:750px">
+				<div style="display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-align:stretch" id="status">
+					<div style="width:100px;font-size:16px; font-weight:bold">Status</div>
+					<div style="-webkit-box-flex:1"> 200 </div>
+				</div>
+				</br>
+				<div style="display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-align:stretch" id="header">
+					<div style="width:100px;font-size:16px; font-weight:bold">Headers</div>
+					<div style="-webkit-box-flex:1">
+						<span>User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko)</span></br>
+						<span>Content-Type: text/plain; charset=utf-8</span></br>
+						<span>Accept: */*</span></br>
+						<span>X-Client-Data: CPG1yQEIiLbJAQiltskBCKm2yQEIxLbJAQi4iMoBCOmIygEIqZTK</span></br>
+						<span>Accept-Encoding: gzip,deflate,sdch</span></br>
+						<span>Accept-Language: zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4</span></div>
+				</div>
+				</br>
+             </div>
+
+		 	 <div id="tabs" style="display:none; max-width:750px">
+			  <ul>
+				<li><a href="#tabs-1">Row</a></li>
+				<li><a href="#tabs-2">Json</a></li>
+				<li><a href="#tabs-3">XML</a></li>
+			  </ul>
+			  <div id="tabs-1">
+				<p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+
+			  </div>
+			  <div id="tabs-2">
+				<p>bbbbbbbbbb</p>
+			  </div>
+			  <div id="tabs-3">
+				<p>cccccccccc</p>
+			  </div>
+
+			</div>
+		  </form>
+		</div>
+	</div>
+  </body>
+</html>
