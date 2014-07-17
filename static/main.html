@@ -32,18 +32,19 @@
 				var start_x = last_clicked.position().left + (last_clicked.outerWidth(true)/2);
 				var start_y = last_clicked.position().top + (last_clicked.outerHeight(true)/2); 
 
+				var block_width = $('a#in_device').width();
 
-					if(start_x > end_x){ 
-						start_x  = start_x -$('a').width()/2; 
-						end_x  = end_x + $('a').width()/2; 
-					}
-					if(start_x < end_x){ 
-						start_x  = start_x + $('a').width()/2; 
-						end_x  = end_x - $('a').width()/2; 
-					}
+				if(start_x > end_x){ 
+					start_x  = start_x - block_width/2; 
+					end_x  = end_x + block_width/2; 
+				}
+				if(start_x < end_x){ 
+					start_x  = start_x + block_width/2; 
+					end_x  = end_x - block_width/2; 
+				}
 
 				// column1 can not connect to column3, column1 can not connect to itself
-				if( Math.abs(start_x - end_x) < $('a').width() && start_x != end_x){
+				if( Math.abs(start_x - end_x) < block_width && start_x != end_x){
 					//Draw each line in the draw buffer            
 					ctx.beginPath();
 					ctx.strokeStyle = '#000';
