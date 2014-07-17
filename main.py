@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 import requests
 
-from ini_parser import ini_parser
+#from ini_parser import ini_parser
 
 # logger shortcut
 debug = app.logger.debug
@@ -23,7 +23,7 @@ error = app.logger.error
 
 
 #################### settings ####################
-HOST, PORT = '0.0.0.0', 8000
+HOST, PORT = '0.0.0.0', 7788
 UPLOAD_DIR = './upload/'
 DEBUG = True
 
@@ -117,7 +117,7 @@ def action():
 def get_list():
     ret = []
     for filename in os.listdir(UPLOAD_DIR):
-        apis = ini_parser(os.path.join(UPLOAD_DIR, filename))
+        #apis = ini_parser(os.path.join(UPLOAD_DIR, filename))
         ret.append({
             'name': os.path.splitext(filename)[1],
             'apis': apis,
