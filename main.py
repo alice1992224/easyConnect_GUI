@@ -50,33 +50,54 @@ def sql_query(SQL):
 
 @app.route('/device_mapping', methods=['GET'])
 def device_mapping():
-    devices = {} 
+    input_devices = {} 
+    output_devices = {} 
     mapping_functions = []
-    device_SQL = """   
-                    SELECT dm_name, df_name FROM DeviceModel
-                    LEFT JOIN ModelFeature USING (dm_id)
-                    LEFT JOIN DeviceFeature USING (df_id);
-                 """
+    input_device_SQL = """   
+                          SELECT dm_name, df_name FROM DeviceModel
+                          LEFT JOIN ModelFeature USING (dm_id)
+                          LEFT JOIN DeviceFeature USING (df_id)
+                          WHERE type='input';
+                       """
     functions_SQL = """   
                         SELECT mf_name FROM MappingFunc;
                     """
+    output_device_SQL = """   
+                           SELECT dm_name, df_name FROM DeviceModel
+                           LEFT JOIN ModelFeature USING (dm_id)
+                           LEFT JOIN DeviceFeature USING (df_id)
+                           WHERE type='output';
+                        """
 
-    device_result = sql_query(device_SQL)
+    device_result = sql_query(input_device_SQL)
     result_list = device_result.split("\n")
     for i in result_list:
         data = i.split("\t")
         if data[0]:
-            if data[0] in devices:
-                devices[data[0]].append(data[1].strip())
+            if data[0] in input_devices:
+                input_devices[data[0]].append(data[1].strip())
                 continue
-            devices.update({data[0].strip(): [data[1].strip()]})
+            input_devices.update({data[0].strip(): [data[1].strip()]})
+
     functions_result = sql_query(functions_SQL)
     mapping_functions = functions_result.split("\n")
     mapping_functions = filter(None, mapping_functions)
-    
+   
+    device_result = sql_query(output_device_SQL)
+    result_list = device_result.split("\n")
+    for i in result_list:
+        data = i.split("\t")
+        if data[0]:
+            if data[0] in output_devices:
+                output_devices[data[0]].append(data[1].strip())
+                continue
+            output_devices.update({data[0].strip(): [data[1].strip()]})
+
+
     return render_template('device_mapping.html', 
-                             devices = devices,
-                             mapping_functions = mapping_functions) 
+                             input_devices = input_devices,
+                             mapping_functions = mapping_functions,
+                             output_devices = output_devices)
 
 #################### main ####################
 def main():

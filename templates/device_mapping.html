@@ -54,11 +54,11 @@
 				<div id="choose_column">
 					<label id="choose_label">Input Devices</label>
 					<ul class="nav nav-list tree" id="choose_ul">
-                    {% for device in devices %}
+                    {% for device in input_devices %}
                         <input type="checkbox" style="height:20px;width:20px"/>
 							<label id="choose_label" class="tree-toggler nav-header" >{{device}}</label>
 							<ul class="nav nav-list tree">
-                            {% for feature in devices[device] %}
+                            {% for feature in input_devices[device] %}
 								<li style="padding-left:10%; width:84%;">
 									<input type="checkbox" style="height:18px;width:18px"/>
 									<label id="choose_a" href="#" style="">{{feature}}</label>
@@ -80,24 +80,22 @@
 					</ul>
 				</div>
 				<div id="choose_column">
-					<label id="choose_label">Input Devices</label>
+					<label id="choose_label">Output Devices</label>
 					<ul class="nav nav-list tree" id="choose_ul">
-					<!-- //////////////// -->
+                    {% for device in output_devices %}
 						<li>
 							<input type="checkbox" style="height:20px;width:20px"/>
-							<label id="choose_label" class="tree-toggler nav-header" >HTC M8</label>
+							<label id="choose_label" class="tree-toggler nav-header" >{{device}}</label>
 							<ul class="nav nav-list tree">
+                            {% for feature in output_devices[device] %}
 								<li style="padding-left:10%; width:84%;">
 									<input type="checkbox" style="height:18px;width:18px"/>
-									<label id="choose_a" href="#" style="">Microphone</label>
+									<label id="choose_a" href="#" style="">{{feature}}</label>
 								</li>
-								<li style="padding-left:10%; width:84%">
-									<input type="checkbox" style="height:18px;width:18px"/>
-									<label id="choose_a" href="#" style="">Camera</label>
-								</li>
+                            {% endfor %}
 							</ul>
 						</li>
-					<!-- //////////////// -->
+                    {% endfor %}
 					</ul>
 				</div>
 			</div>
