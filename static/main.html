@@ -31,16 +31,15 @@
 				var end_y = $(this).position().top + ($(this).outerHeight(true)/2);
 				var start_x = last_clicked.position().left + (last_clicked.outerWidth(true)/2);
 				var start_y = last_clicked.position().top + (last_clicked.outerHeight(true)/2); 
-
 				var block_width = $('a#in_device').width();
 
 				if(start_x > end_x){ 
-					start_x  = start_x - block_width/2; 
-					end_x  = end_x + block_width/2; 
+					start_x  = start_x - block_width/2+4; 
+					end_x  = end_x + block_width/2-4; 
 				}
 				if(start_x < end_x){ 
-					start_x  = start_x + block_width/2; 
-					end_x  = end_x - block_width/2; 
+					start_x  = start_x + block_width/2-4; 
+					end_x  = end_x - block_width/2+4; 
 				}
 
 				// column1 can not connect to column3, column1 can not connect to itself
@@ -48,6 +47,8 @@
 					//Draw each line in the draw buffer            
 					ctx.beginPath();
 					ctx.strokeStyle = '#000';
+                    //"#"+("000"+(Math.random()*(1<<24)|0).toString(16)).substr(-6);
+                    ctx.lineWidth = 4;
 					ctx.moveTo(start_x, start_y);
 					ctx.lineTo(end_x, end_y);
 					ctx.stroke();
@@ -64,9 +65,9 @@
     <div class="related">
      <ul>
         <li class="right button" style="margin-right: 10px">
-          <a href="../static/logout.html" title="Logout Index" accesskey="I">Logout</a></li>
+          <a href="../static/logout.html">Logout</a></li>
         <li class="right button">
-          <a href="../static/profile.html" title="Python Module Index">Profile</a> |</li>
+          <a href="../static/profile.html">Profile</a> |</li>
         <li>
             <img src="http://www.ltn.com.tw/2011/new/nov/24/images/photoTale/W4ssnp8.jpg" alt="" style="vertical-align: middle; margin-top: -1px" height="40" width="40">
         </li>
@@ -74,19 +75,38 @@
       </ul>
     </div>
     <!--<div class="col-xs-4 col-sm-2" style="height:100%; background-color:#2b5b84; padding-top:30px; padding-left:50px"></div>-->
-    <div class="col-xs-4 col-sm-2" style="height:100%; background-color:#d4dee6; padding-top:30px; padding-left:50px"></div>
+    <div class="col-xs-4 col-sm-2 sphinxsidebar" style="height:100%; width:13%; background-color:#d4dee6; padding-top:30px; padding-left:10px">
+    <h3>Project List</h3>
+    <ul>
+        <li><a href="">Chinese Art</a></li>
+        <li><a href="">Fire Life</a></li>
+        <li><a href="">Crazy wind</a></li>
+        <li><a href="" style="font-family: 'Lucida Grande', Arial, sans-serif; font-size: 1.2em; color: #000000;"><br>+ new project</a></li>
+    </ul>
+    </div>
 
-    <div class="col-sm-9" style="height:100%">
-
+    <div class="col-sm-9" style="height:100%;">
 		<div class="container">
 			<fieldset>
-				<legend>Connection Edit</legend>
+				<legend style="font-size: 250%;">Connection Edit</legend>
 			</fieldset>
+            <p style="font-size:150%;">
+            Welcome! Just click the devices and mapping functions to set the connection.
+            </p>
+            <div>
+                <select>
+                    <option>gg</option>
+                </select>
+                <input type="submit" value="Save">
+                <select>
+                    <option>yy</option>
+                </select>
+            </div>
 			<div id="game_area">
 				<div id="stage">
 					
-					<a href="javascript:;" id='in_device' class="button cell"></a>
-					<a href="javascript:;" id='map_func' class="button cell"></a>
+                    <a href="javascript:;" id='in_device' class="button cell"></a>
+					<a href="javascript:;" id='map_func' class="button cell" style="visibility: hidden;"></a>
 					<a href="javascript:;" id='out_device' class="button cell"></a>
 
 					<a href="javascript:;" id='in_device' class="button cell"></a>
