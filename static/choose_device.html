@@ -50,47 +50,62 @@
 			<fieldset>
 				<legend style="font-size: 250%;">Connection Edit</legend>
 			</fieldset>
-			<div style="column-count:3; height:100%" style="width:100%; height:100%;">
+			<div style="column-count:3; width:100%; height:auto;">
 				<div id="choose_column">
-					<legend >Input Devices</legend>
+					<label id="choose_label">Input Devices</label>
 					<ul class="nav nav-list tree" id="choose_ul">
-						<li><label id="choose_label" class="tree-toggler nav-header" >HTC M8</label>
+					<!-- //////////////// -->
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label id="choose_label" class="tree-toggler nav-header" >HTC M8</label>
 							<ul class="nav nav-list tree">
-								<li style="padding-left:10px; width:84%"><a id="choose_a" href="#" style="">Microphone</a></li>
-								<li style="padding-left:10px; width:84%"><a id="choose_a" href="#" style="">Camera</a></li>
+								<li style="padding-left:10%; width:84%;">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Microphone</label>
+								</li>
+								<li style="padding-left:10%; width:84%">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Camera</label>
+								</li>
 							</ul>
 						</li>
-						<li><label class="tree-toggler nav-header" id="choose_label">Samsung S5</label>
-							<ul class="nav nav-list tree">
-								<li style="padding-left:10px; width:84%"><a href="#" id="choose_a">G sensor</a></li>
-								<li style="padding-left:10px; width:84%"><a href="#" id="choose_a">GPS</a></li>
-							</ul>
-						</li>
+					<!-- //////////////// -->
 					</ul>
 				</div>
 				<div id="choose_column">
-					<legend style="width:100%;">Mapping Functions</legend>
+					<label id="choose_label">Mapping Functions</label>
 					<ul class="nav nav-list tree" id="choose_ul">
-						<li><label class="tree-toggler nav-header" id="choose_label">Linear</label>
+					<!-- //////////////// -->
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label class="tree-toggler nav-header" id="choose_label">Linear</label>
 						</li>
-						<li><label class="tree-toggler nav-header" id="choose_label">Quadratic</label>
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label class="tree-toggler nav-header" id="choose_label">Quadratic</label>
 						</li>
+					<!-- //////////////// -->
 					</ul>
 				</div>
 				<div id="choose_column">
-					<legend style="width:100%;">Output Devices</legend>
+					<label id="choose_label">Input Devices</label>
 					<ul class="nav nav-list tree" id="choose_ul">
-						<li><label class="tree-toggler nav-header" id="choose_label">MP3 Player</label>
+					<!-- //////////////// -->
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label id="choose_label" class="tree-toggler nav-header" >HTC M8</label>
 							<ul class="nav nav-list tree">
-								<li style="padding-left:10px; width:84%"><a href="#" id="choose_a">Volume</a></li>
+								<li style="padding-left:10%; width:84%;">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Microphone</label>
+								</li>
+								<li style="padding-left:10%; width:84%">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Camera</label>
+								</li>
 							</ul>
 						</li>
-						<li><label class="tree-toggler nav-header" id="choose_label">Bulb</label>
-							<ul class="nav nav-list tree">
-								<li style="padding-left:10px; width:84%"><a href="#" id="choose_a">Lightness</a></li>
-								<li style="padding-left:10px; width:84%"><a href="#" id="choose_a">Frequency</a></li>
-							</ul>
-						</li>
+					<!-- //////////////// -->
 					</ul>
 				</div>
 			</div>
