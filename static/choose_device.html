@@ -11,7 +11,17 @@
 	    <script src="../static/jquery-ui.js"></script>
 	    <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
 	    <script src="http://gregpike.net/demos/bootstrap-file-input/bootstrap.file-input.js.pagespeed.jm.IdmWcpRIii.js"></script>
-	<script>$(document).ready(function(){$('input[type=file]').bootstrapFileInput();});</script>
+	<script>
+		$(document).ready(function(){
+			$('input[type=file]').bootstrapFileInput();
+
+			// for folding
+			$('label.tree-toggler').click(function () {
+				$(this).parent().children('ul.tree').toggle(300);
+			});
+		});
+
+	</script>
     </head>
     <body>
     <div class="related">
@@ -36,7 +46,7 @@
         <li><a href="" style="font-family: 'Lucida Grande', Arial, sans-serif; font-size: 1.2em; color: #000000;"><br>+ new project</a></li>
     </ul>
     </div>
-    <div class="col-sm-9" style="height:25%;">
+    <div class="col-sm-12" style="height:25%;">
 		<div class="container">
 			<fieldset>
 				<legend style="font-size: 250%;">Connection Edit</legend>
@@ -45,51 +55,50 @@
             Welcome! Just click the devices and mapping functions to set the connection.
             </p>
         </div>
-    </div>
-<!-- ===================================================================== -->
-    <div style="column-count:3; column-gap:10px;" style="width:100%; height:100%;">
-        <div style="display:inline-block">
-            <legend style="width:30%">Input Devices</legend>
-            <ul class="nav nav-list tree" style="overflow-y: scroll; overflow-x: hidden; height: 100%; width:30%;">
-                <li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">HTC M8</label>
-                    <ul class="nav nav-list tree">
-                        <li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Microphone</a></li>
-                        <li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Camera</a></li>
-                    </ul>
-                </li>
-                <li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Samsung S5</label>
-                    <ul class="nav nav-list tree">
-                        <li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">G sensor</a></li>
-                        <li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">GPS</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div style="display:inline-block">
-            <legend style="width:30%;">Mapping Functions</legend>
-            <ul class="nav nav-list tree" style="overflow-y: scroll; overflow-x: hidden; height: 100%; width:30%;">
-                <li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Linear</label>
-                </li>
-                <li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Quadratic</label>
-                </li>
-            </ul>
-        </div>
-        <div style="display:inline-block">
-            <legend style="width:30%;">Output Devices</legend>
-            <ul class="nav nav-list tree" style="overflow-y: scroll; overflow-x: hidden; height: 100%; width:30%;">
-                <li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">MP3 Player</label>
-                    <ul class="nav nav-list tree">
-                        <li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Volume</a></li>
-                    </ul>
-                </li>
-                <li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Bulb</label>
-                    <ul class="nav nav-list tree">
-                        <li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Lightness</a></li>
-                        <li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Frequency</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
+		<div style="column-count:3;" style="width:100%; height:100%;">
+			<div style="display:inline-block; width:30%;">
+				<legend style="">Input Devices</legend>
+				<ul class="nav nav-list tree" style="overflow-y: scroll; overflow-x: hidden; height: 100%; width:30%;">
+					<li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">HTC M8</label>
+						<ul class="nav nav-list tree">
+							<li style="padding-left:10px; width:84%"><a href="#" style="">Microphone</a></li>
+							<li style="padding-left:10px; width:84%"><a href="#" style="">Camera</a></li>
+						</ul>
+					</li>
+					<li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Samsung S5</label>
+						<ul class="nav nav-list tree">
+							<li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">G sensor</a></li>
+							<li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">GPS</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div style="display:inline-block; width:30%">
+				<legend style="width:100%;">Mapping Functions</legend>
+				<ul class="nav nav-list tree" style="overflow-y: scroll; overflow-x: hidden; height: 100%; width:30%;">
+					<li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Linear</label>
+					</li>
+					<li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Quadratic</label>
+					</li>
+				</ul>
+			</div>
+			<div style="display:inline-block; width:30%">
+				<legend style="width:100%;">Output Devices</legend>
+				<ul class="nav nav-list tree" style="overflow-y: scroll; overflow-x: hidden; height: 100%; width:30%;">
+					<li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">MP3 Player</label>
+						<ul class="nav nav-list tree">
+							<li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Volume</a></li>
+						</ul>
+					</li>
+					<li><label class="tree-toggler nav-header" style="padding-left:10px; font-size:18px; color:#000000; font-family: 'Lucida Grande', Arial, sans-serif;">Bulb</label>
+						<ul class="nav nav-list tree">
+							<li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Lightness</a></li>
+							<li style="padding-left:10px; width:84%"><a href="#" style="font-size:16px; color:#428bca; font-family: 'Lucida Grande', Arial, sans-serif;">Frequency</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	  </div>
     </body>
 </html>
