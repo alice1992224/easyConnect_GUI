@@ -4,6 +4,7 @@ import json
 import os
 import os.path
 import urllib.parse
+import subprocess
 
 from flask import Flask
 from flask import redirect
@@ -27,8 +28,67 @@ HOST, PORT = '0.0.0.0', 7788
 UPLOAD_DIR = './upload/'
 DEBUG = True
 
+db_host = "openmtc.darkgerm.com"  
+db_usr = "yb"  
+db_passwd = "iloveliny"
+db_name = "easyconnect"
+db_port = 3306
 
 #################### utils ####################
+
+def sql_query(SQL):
+    #result = subprocess.Popen('mysql -h%s -u%s -p%s -D%s -Bse%s' %(db_host, db_usr, db_passwd, db_name, SQL), stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+    p = subprocess.Popen([
+        'mysql',
+        '-h' + db_host,
+        '-s',
+        '-u' + db_usr,
+        '-p' + db_passwd,
+        '-D' + db_name,
+    ], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    return p.communicate(input=SQL.encode())[0].decode()
+
+@app.route('/device_mapping', methods=['GET'])
+def device_mapping():
+    devices = {} 
+    features = {}
+    SQL = """   
+                SELECT dm_name, df_name FROM DeviceModel
+                LEFT JOIN ModelFeature USING (dm_id)
+                LEFT JOIN DeviceFeature USING (df_id);
+          """
+    result = sql_query(SQL)
+    result_list = result.split("\n")
+    for i in result_list:
+        data = i.split("\t")
+        if data[0]:
+            if data[0] in devices:
+                devices[data[0]].append(data[1].strip())
+                continue
+            devices.update({data[0].strip(): [data[1].strip()]})
+    print(devices)
+    return render_template('device_mapping.html', 
+                             devices = devices) 
+
+
+#################### main ####################
+def main():
+    if not os.path.exists(UPLOAD_DIR):
+        os.mkdir(UPLOAD_DIR)
+
+    app.run(
+        host = HOST, port = PORT,
+        threaded = True,
+        debug = DEBUG,
+    )
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
 def parse_headers(headers):
     """Multi-line string of headers -> dict"""
     rst = {}
@@ -37,7 +97,6 @@ def parse_headers(headers):
         if len(entry) < 2: continue
         rst.update({entry[0].strip(): entry[1].strip()})
     return rst
-
 
 #################### routing ####################
 @app.route('/hello/<name>', methods=['GET'])
@@ -125,17 +184,3 @@ def get_list():
     return json.dumps(ret)
 
 
-#################### main ####################
-def main():
-    if not os.path.exists(UPLOAD_DIR):
-        os.mkdir(UPLOAD_DIR)
-
-    app.run(
-        host = HOST, port = PORT,
-        threaded = True,
-        debug = DEBUG,
-    )
-
-
-if __name__ == '__main__':
-    main()

@@ -1,0 +1,128 @@
+<html>
+    <head>
+	    <title>Easy Connect</title>
+	    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	    <link rel="stylesheet" href="../static/style.css">
+	    <script src="../static/jquery-1.11.1.min.js"></script>
+	    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+	    <script src="../static/jquery-ui/jquery-ui.min.js"></script>
+	    <script src="../static/jquery-ui.js"></script>
+	    <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+	    <script src="http://gregpike.net/demos/bootstrap-file-input/bootstrap.file-input.js.pagespeed.jm.IdmWcpRIii.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('input[type=file]').bootstrapFileInput();
+
+			// for folding
+			$('label.tree-toggler').click(function () {
+				$(this).parent().children('ul.tree').toggle(300);
+			});
+		});
+
+	</script>
+    </head>
+    <body>
+    <div class="related">
+     <ul>
+        <li class="right button" style="margin-right: 10px">
+          <a href="../static/logout.html">Logout</a></li>
+        <li class="right button">
+          <a href="../static/profile.html">Profile</a> |</li>
+        <li>
+            <img src="../static/images/W4ssnp8.jpg" alt="" style="vertical-align: middle; margin-top: -1px" height="40" width="40">
+        </li>
+        <li><a href="../static/main.html">EasyConnect</a> »</li>
+      </ul>
+    </div>
+    <div class="col-sm-2 sphinxsidebar" style="height:100%; background-color:#d4dee6; padding-top:30px; padding-left:10px">
+		<h3>Project List</h3>
+		<ul>
+			<li><a href="../static/choose.html">Chinese Art</a></li>
+			<li><a href="">Fire Life</a></li>
+			<li><a href="">Crazy wind</a></li>
+			<li><a href="" style="font-family: 'Lucida Grande', Arial, sans-serif; font-size: 1.2em; color: #000000;"><br>+ new project</a></li>
+		</ul>
+    </div>
+    <div class="col-sm-10">
+		<div class="container">
+			<fieldset>
+				<legend style="font-size: 250%;">Connection Edit</legend>
+			</fieldset>
+			<div style="column-count:3; width:100%; height:auto;">
+				<div id="choose_column">
+					<label id="choose_label">Input Devices</label>
+					<ul class="nav nav-list tree" id="choose_ul">
+                    {% for device in devices %}
+                        <input type="checkbox" style="height:20px;width:20px"/>
+							<label id="choose_label" class="tree-toggler nav-header" >{{device}}</label>
+							<ul class="nav nav-list tree">
+                            {% for feature in devices[device] %}
+								<li style="padding-left:10%; width:84%;">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">{{feature}}</label>
+								</li>
+                            {% endfor %}
+							</ul>
+                    {% endfor %}
+					<!-- //////////////// 
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label id="choose_label" class="tree-toggler nav-header" >HTC M8</label>
+							<ul class="nav nav-list tree">
+								<li style="padding-left:10%; width:84%;">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Microphone</label>
+								</li>
+								<li style="padding-left:10%; width:84%">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Camera</label>
+								</li>
+							</ul>
+						</li>
+					 //////////////// -->
+                     {{content}}
+					</ul>
+				</div>
+				<div id="choose_column">
+					<label id="choose_label">Mapping Functions</label>
+					<ul class="nav nav-list tree" id="choose_ul">
+					<!-- //////////////// -->
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label class="tree-toggler nav-header" id="choose_label">Linear</label>
+						</li>
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label class="tree-toggler nav-header" id="choose_label">Quadratic</label>
+						</li>
+					<!-- //////////////// -->
+					</ul>
+				</div>
+				<div id="choose_column">
+					<label id="choose_label">Input Devices</label>
+					<ul class="nav nav-list tree" id="choose_ul">
+					<!-- //////////////// -->
+						<li>
+							<input type="checkbox" style="height:20px;width:20px"/>
+							<label id="choose_label" class="tree-toggler nav-header" >HTC M8</label>
+							<ul class="nav nav-list tree">
+								<li style="padding-left:10%; width:84%;">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Microphone</label>
+								</li>
+								<li style="padding-left:10%; width:84%">
+									<input type="checkbox" style="height:18px;width:18px"/>
+									<label id="choose_a" href="#" style="">Camera</label>
+								</li>
+							</ul>
+						</li>
+					<!-- //////////////// -->
+					</ul>
+				</div>
+			</div>
+        </div>
+	  </div>
+    </body>
+</html>
