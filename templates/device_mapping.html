@@ -66,38 +66,17 @@
                             {% endfor %}
 							</ul>
                     {% endfor %}
-					<!-- //////////////// 
-						<li>
-							<input type="checkbox" style="height:20px;width:20px"/>
-							<label id="choose_label" class="tree-toggler nav-header" >HTC M8</label>
-							<ul class="nav nav-list tree">
-								<li style="padding-left:10%; width:84%;">
-									<input type="checkbox" style="height:18px;width:18px"/>
-									<label id="choose_a" href="#" style="">Microphone</label>
-								</li>
-								<li style="padding-left:10%; width:84%">
-									<input type="checkbox" style="height:18px;width:18px"/>
-									<label id="choose_a" href="#" style="">Camera</label>
-								</li>
-							</ul>
-						</li>
-					 //////////////// -->
-                     {{content}}
 					</ul>
 				</div>
 				<div id="choose_column">
 					<label id="choose_label">Mapping Functions</label>
 					<ul class="nav nav-list tree" id="choose_ul">
-					<!-- //////////////// -->
+                    {% for function in mapping_functions %}
 						<li>
 							<input type="checkbox" style="height:20px;width:20px"/>
-							<label class="tree-toggler nav-header" id="choose_label">Linear</label>
+							<label class="tree-toggler nav-header" id="choose_label">{{function}}</label>
 						</li>
-						<li>
-							<input type="checkbox" style="height:20px;width:20px"/>
-							<label class="tree-toggler nav-header" id="choose_label">Quadratic</label>
-						</li>
-					<!-- //////////////// -->
+                    {% endfor %}
 					</ul>
 				</div>
 				<div id="choose_column">

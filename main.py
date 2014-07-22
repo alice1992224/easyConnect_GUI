@@ -51,14 +51,18 @@ def sql_query(SQL):
 @app.route('/device_mapping', methods=['GET'])
 def device_mapping():
     devices = {} 
-    features = {}
-    SQL = """   
-                SELECT dm_name, df_name FROM DeviceModel
-                LEFT JOIN ModelFeature USING (dm_id)
-                LEFT JOIN DeviceFeature USING (df_id);
-          """
-    result = sql_query(SQL)
-    result_list = result.split("\n")
+    mapping_functions = []
+    device_SQL = """   
+                    SELECT dm_name, df_name FROM DeviceModel
+                    LEFT JOIN ModelFeature USING (dm_id)
+                    LEFT JOIN DeviceFeature USING (df_id);
+                 """
+    functions_SQL = """   
+                        SELECT mf_name FROM MappingFunc;
+                    """
+
+    device_result = sql_query(device_SQL)
+    result_list = device_result.split("\n")
     for i in result_list:
         data = i.split("\t")
         if data[0]:
@@ -66,10 +70,13 @@ def device_mapping():
                 devices[data[0]].append(data[1].strip())
                 continue
             devices.update({data[0].strip(): [data[1].strip()]})
-    print(devices)
+    functions_result = sql_query(functions_SQL)
+    mapping_functions = functions_result.split("\n")
+    mapping_functions = filter(None, mapping_functions)
+    
     return render_template('device_mapping.html', 
-                             devices = devices) 
-
+                             devices = devices,
+                             mapping_functions = mapping_functions) 
 
 #################### main ####################
 def main():
