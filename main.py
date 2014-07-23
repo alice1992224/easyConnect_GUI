@@ -54,19 +54,19 @@ def device_mapping():
     output_devices = {} 
     mapping_functions = []
     input_device_SQL = """   
-                          SELECT dm_name, df_name FROM DeviceModel
+                          SELECT ld_name, df_name FROM Device
                           LEFT JOIN ModelFeature USING (dm_id)
                           LEFT JOIN DeviceFeature USING (df_id)
-                          WHERE type='input';
+                          WHERE type='input' and u_id=1;
                        """
     functions_SQL = """   
                         SELECT mf_name FROM MappingFunc;
                     """
     output_device_SQL = """   
-                           SELECT dm_name, df_name FROM DeviceModel
+                           SELECT ld_name, df_name FROM Device
                            LEFT JOIN ModelFeature USING (dm_id)
                            LEFT JOIN DeviceFeature USING (df_id)
-                           WHERE type='output';
+                           WHERE type='output' and u_id=1;
                         """
 
     device_result = sql_query(input_device_SQL)
@@ -100,7 +100,7 @@ def device_mapping():
                              output_devices = output_devices)
 
 
-@app.route('/connection', methods=['POST'])
+@app.route('/connection', methods=['POST','GET'])
 def connection():
     input_device = {}
     mapping_function = []
