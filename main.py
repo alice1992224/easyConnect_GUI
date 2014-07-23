@@ -39,7 +39,7 @@ db_port = 3306
 def sql_query(SQL):
     #result = subprocess.Popen('mysql -h%s -u%s -p%s -D%s -Bse%s' %(db_host, db_usr, db_passwd, db_name, SQL), stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
     p = subprocess.Popen([
-        'mysql',
+        '/usr/local/mysql/bin/mysql',
         '-h' + db_host,
         '-s',
         '-u' + db_usr,
