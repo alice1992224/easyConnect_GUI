@@ -100,10 +100,23 @@ def device_mapping():
                              output_devices = output_devices)
 
 
-@app.route('/connection', methods=['GET'])
+@app.route('/connection', methods=['POST'])
 def connection():
-    return render_template('connection.html')
-	
+    input_device = {}
+    mapping_function = []
+    output_device = {}
+    for i in request.form.getlist('input_device[]'):
+        input_device.update({i: request.form.getlist('input_'+i+'[]')})
+
+    mapping_function = request.form.getlist('mapping_function[]')
+    
+    for i in request.form.getlist('output_device[]'):
+        output_device.update({i: request.form.getlist('output_'+i+'[]')})
+
+    return render_template('connection.html',
+                            input_device = input_device,
+                            mapping_function = mapping_function,
+                            output_device = output_device)
 
 #################### main ####################
 def main():

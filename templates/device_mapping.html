@@ -44,24 +44,24 @@
 			<li><a href="" style="font-family: 'Lucida Grande', Arial, sans-serif; font-size: 1.2em; color: #000000;"><br>+ new project</a></li>
 		</ul>
     </div>
+    <form action="/connection" method="POST">
     <div class="col-sm-10">
 		<div class="container">
 			<fieldset>
-				<legend style="font-size: 250%;">Connection Edit</legend>
+				<legend style="font-size: 250%;">Connection Edit<input type="submit" value="Save" style="float:right"></legend>
 			</fieldset>
-            <form>
 			<div style="column-count:3; width:100%; height:auto;">
 				<div id="choose_column">
 					<label id="choose_label">Input Devices</label>
 					<ul class="nav nav-list tree" id="choose_ul">
                     {% for device in input_devices %}
 					<li>
-                        <input type="checkbox" style="height:20px;width:20px"/>
+                        <input type="checkbox" style="height:20px;width:20px" name="input_device[]" value="{{device}}"/>
 							<label id="choose_label" class="tree-toggler nav-header" >{{device}}</label>
 							<ul class="nav nav-list tree">
                             {% for feature in input_devices[device] %}
 								<li style="padding-left:10%; width:84%;">
-									<input type="checkbox" style="height:18px;width:18px"/>
+									<input type="checkbox" style="height:18px;width:18px" name="input_{{device}}[]" value="{{feature}}"/>
 									<label id="choose_a" href="#" style="">{{feature}}</label>
 								</li>
                             {% endfor %}
@@ -75,7 +75,7 @@
 					<ul class="nav nav-list tree" id="choose_ul">
                     {% for function in mapping_functions %}
 						<li>
-							<input type="checkbox" style="height:20px;width:20px"/>
+							<input type="checkbox" style="height:20px;width:20px" name="mapping_function[]" value="{{function}}"/>
 							<label class="tree-toggler nav-header" id="choose_label">{{function}}</label>
 						</li>
                     {% endfor %}
@@ -86,12 +86,12 @@
 					<ul class="nav nav-list tree" id="choose_ul">
                     {% for device in output_devices %}
 						<li>
-							<input type="checkbox" style="height:20px;width:20px"/>
+							<input type="checkbox" style="height:20px;width:20px" name="output_device[]" value="{{device}}"/>
 							<label id="choose_label" class="tree-toggler nav-header" >{{device}}</label>
 							<ul class="nav nav-list tree">
                             {% for feature in output_devices[device] %}
 								<li style="padding-left:10%; width:84%;">
-									<input type="checkbox" style="height:18px;width:18px"/>
+									<input type="checkbox" style="height:18px;width:18px" name="output_{{device}}[]" value="{{feature}}"/>
 									<label id="choose_a" href="#" style="">{{feature}}</label>
 								</li>
                             {% endfor %}
@@ -101,8 +101,8 @@
 					</ul>
 				</div>
 			</div>
-            </form>
         </div>
 	  </div>
+      </form>
     </body>
 </html>
