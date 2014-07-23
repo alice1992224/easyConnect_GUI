@@ -102,21 +102,84 @@ def device_mapping():
 
 @app.route('/connection', methods=['POST','GET'])
 def connection():
-    input_device = {}
-    mapping_function = []
-    output_device = {}
-    for i in request.form.getlist('input_device[]'):
-        input_device.update({i: request.form.getlist('input_'+i+'[]')})
+    input_feature_SQL = """   
+                          SELECT df_name FROM DeviceFeature
+                          LEFT JOIN ModelFeature USING (df_id)
+                          LEFT JOIN Device USING (dm_id)
+                          WHERE type='input' and u_id=1 and ld_name='{0}';
+                       """
+    output_feature_SQL = """   
+                           SELECT df_name FROM DeviceFeature
+                           LEFT JOIN ModelFeature USING (df_id)
+                           LEFT JOIN Device USING (dm_id)
+                           WHERE type='output' and u_id=1 and ld_name='{0}';
+                        """
+    input_device_SQL = """   
+                          SELECT ld_name FROM Device
+                          LEFT JOIN ModelFeature USING (dm_id)
+                          LEFT JOIN DeviceFeature USING (df_id)
+                          WHERE type='input' and u_id=1;
+                       """
+    output_device_SQL = """   
+                           SELECT ld_name FROM Device
+                           LEFT JOIN ModelFeature USING (dm_id)
+                           LEFT JOIN DeviceFeature USING (df_id)
+                           WHERE type='output' and u_id=1;
+                        """
 
-    mapping_function = request.form.getlist('mapping_function[]')
+    input_devices = {}
+    mapping_functions = []
+    output_devices = {}
+    input_feature = []
+    output_feature = []
     
+    # choose the outter checkbox
+    input_device_list = sql_query(input_device_SQL).split('\n')
+    for i in request.form.getlist('input_device[]'):
+        result = sql_query(input_feature_SQL.format(i)).split('\n')
+        input_device_list.remove(i)
+        for j in result:
+            if j:
+               input_feature.append(j)
+        input_devices.update({i: input_feature})
+        input_feature = []
+
+    # choose only some of the inner checkbox
+    for i in input_device_list:
+        if i:
+            input_feature = request.form.getlist('input_' + i + '[]')
+            if input_feature:
+                input_devices.update({i: input_feature})
+            else:
+                continue
+
+    # choose mapping functions
+    mapping_functions = request.form.getlist('mapping_function[]')
+    
+    # choose the outter checkbox
+    output_device_list = sql_query(output_device_SQL).split('\n')
     for i in request.form.getlist('output_device[]'):
-        output_device.update({i: request.form.getlist('output_'+i+'[]')})
+        result = sql_query(output_feature_SQL.format(i)).split('\n')
+        output_device_list.remove(i)
+        for j in result:
+            if j:
+                output_feature.append(j)
+        output_devices.update({i: output_feature})
+        output_feature = []
+    
+    # choose only some of the inner checkbox
+    for i in output_device_list:
+        if i:
+            output_feature = request.form.getlist('output_' + i + '[]')
+            if output_feature:
+                output_devices.update({i: output_feature})
+            else:
+                continue
 
     return render_template('connection.html',
-                            input_device = input_device,
-                            mapping_function = mapping_function,
-                            output_device = output_device)
+                            input_devices = input_devices,
+                            mapping_functions = mapping_functions,
+                            output_devices = output_devices)
 
 #################### main ####################
 def main():

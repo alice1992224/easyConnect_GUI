@@ -91,7 +91,12 @@
             </fieldset>
             <div id="game_area">
                 <div id="stage">
-
+                {% for device in input_devices %}
+                    <a href="javascript:;" id='in_device' class="button cell">{{device}}</a>
+                    <a href="javascript:;" id='map_func' class="button cell">{{device}}</a>
+                    <a href="javascript:;" id='out_device' class="button cell">{{device}}</a>
+                {% endfor %}
+                <!--
                     <a href="javascript:;" id='in_device' class="button cell">Smart Phone</a>
                     <a href="javascript:;" id='map_func' class="button cell" style="visibility: hidden;"></a>
                     <a href="javascript:;" id='out_device' class="button cell">Bulb</a>
@@ -108,7 +113,7 @@
                     <a href="javascript:;" id='in_device' class="button cell">G Sensor</a>
                     <a href="javascript:;" id='map_func' class="button cell" style="visibility: hidden;"></a>
                     <a href="javascript:;" id='out_device' class="button cell">MP3 Player</a>
-
+                -->
                     <div class="clear"></div>
                     <canvas width="1077px" height="500px" id="background"></canvas>
                 </div>
