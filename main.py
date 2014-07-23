@@ -99,6 +99,12 @@ def device_mapping():
                              mapping_functions = mapping_functions,
                              output_devices = output_devices)
 
+
+@app.route('/connection', methods=['GET'])
+def connection():
+    return render_template('connection.html')
+	
+
 #################### main ####################
 def main():
     if not os.path.exists(UPLOAD_DIR):
