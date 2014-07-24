@@ -91,10 +91,22 @@
             </fieldset>
             <div id="game_area">
                 <div id="stage">
-                {% for device in input_devices %}
-                    <a href="javascript:;" id='in_device' class="button cell">{{device}}</a>
-                    <a href="javascript:;" id='map_func' class="button cell">{{device}}</a>
-                    <a href="javascript:;" id='out_device' class="button cell">{{device}}</a>
+                {% for index in range(max_len) %}
+                    {% if str_input[index]!='empty' %}
+                        <a href="javascript:;" id='in_device' class="button cell">{{str_input[index]}}</a>
+                    {% else %}
+                        <a href="javascript:;" id='in_device' class="button cell" style="visibility: hidden;"></a>
+                    {% endif %}
+                    {% if str_mapping[index]!='empty' %}
+                        <a href="javascript:;" id='map_func' class="button cell">{{str_mapping[index]}}</a>
+                    {% else %}
+                        <a href="javascript:;" id='map_func' class="button cell" style="visibility: hidden;"></a>
+                    {% endif %}
+                    {% if str_input[index]!='empty' %}
+                        <a href="javascript:;" id='out_device' class="button cell">{{str_output[index]}}</a>
+                    {% else %}
+                        <a href="javascript:;" id='out_device' class="button cell" style="visibility: hidden;"></a>
+                    {% endif %}
                 {% endfor %}
                 <!--
                     <a href="javascript:;" id='in_device' class="button cell">Smart Phone</a>

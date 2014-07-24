@@ -165,10 +165,39 @@ def connection():
             else:
                 continue
 
+    ##########################
+    str_input = []
+    str_mapping = mapping_functions
+    str_output = []
+    i_len = 0
+    o_len = 0
+    m_len = len(mapping_functions)
+    # id_id
+    for i in input_devices.keys():
+        for j in input_devices[i]:
+            i_len += 1
+            str_input.append(str(i) + '_' + str(j))
+    # id_id
+    for i in output_devices.keys():
+        for j in output_devices[i]:
+            o_len += 1 
+            str_output.append(str(i) + '_' + str(j))
+    max_len = max(i_len, o_len, m_len)
+    if i_len < max_len:
+        for i in range(max_len-i_len):
+            str_input.append('empty')
+    if o_len < max_len:
+        for i in range(max_len-o_len):
+            str_output.append('empty')
+    if m_len < max_len:
+        for i in range(max_len-m_len):
+            str_mapping.append('empty')
+
     return render_template('connection.html',
-                            input_devices = input_devices,
-                            mapping_functions = mapping_functions,
-                            output_devices = output_devices)
+                            max_len = max_len,
+                            str_input = str_input,
+                            str_mapping = str_mapping,
+                            str_output = str_output)
 
 #################### main ####################
 def main():
