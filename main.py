@@ -51,77 +51,86 @@ def sql_query(SQL):
 @app.route('/device_mapping', methods=['GET'])
 def device_mapping():
     input_devices = {} 
+    input_devices_id = {} 
     output_devices = {} 
+    output_devices_id = {} 
     mapping_functions = []
+    mapping_functions_id = {}
+    feature_id = {}
     input_device_SQL = """   
-                          SELECT ld_name, df_name FROM Device
+                          SELECT ld_name, df_name, ld_id, df_id FROM Device
                           LEFT JOIN ModelFeature USING (dm_id)
                           LEFT JOIN DeviceFeature USING (df_id)
                           WHERE type='input' and u_id=1;
                        """
     functions_SQL = """   
-                        SELECT mf_name FROM MappingFunc;
+                        SELECT mf_name, mf_id FROM MappingFunc;
                     """
     output_device_SQL = """   
-                           SELECT ld_name, df_name FROM Device
+                           SELECT ld_name, df_name, ld_id, df_id FROM Device
                            LEFT JOIN ModelFeature USING (dm_id)
                            LEFT JOIN DeviceFeature USING (df_id)
                            WHERE type='output' and u_id=1;
                         """
 
-    device_result = sql_query(input_device_SQL)
-    result_list = device_result.split("\n")
+    result_list = list(filter(None, sql_query(input_device_SQL).split("\n")))
     for i in result_list:
         data = i.split("\t")
-        if data[0]:
-            if data[0] in input_devices:
-                input_devices[data[0]].append(data[1].strip())
-                continue
-            input_devices.update({data[0].strip(): [data[1].strip()]})
+        feature_id.update({data[1]: data[3]})
+        if data[0] in input_devices:
+            input_devices[data[0]].append(data[1].strip())
+            continue
+        input_devices.update({data[0].strip(): [data[1].strip()]})
+        input_devices_id.update({data[0]: data[2]})
 
-    functions_result = sql_query(functions_SQL)
-    mapping_functions = functions_result.split("\n")
-    mapping_functions = filter(None, mapping_functions)
+    functions_result = list(filter(None, sql_query(functions_SQL).split("\n")))
+    for i in functions_result:
+        functions = i.split("\t")
+        mapping_functions.append(functions[0])
+        mapping_functions_id.update({functions[0]: functions[1]})
    
-    device_result = sql_query(output_device_SQL)
-    result_list = device_result.split("\n")
+    result_list = list(filter(None, sql_query(output_device_SQL).split("\n")))
     for i in result_list:
         data = i.split("\t")
-        if data[0]:
-            if data[0] in output_devices:
-                output_devices[data[0]].append(data[1].strip())
-                continue
-            output_devices.update({data[0].strip(): [data[1].strip()]})
-
+        feature_id.update({data[1]: data[3]})
+        if data[0] in output_devices:
+            output_devices[data[0]].append(data[1].strip())
+            continue
+        output_devices.update({data[0].strip(): [data[1].strip()]})
+        output_devices_id.update({data[0]: data[2]})
 
     return render_template('device_mapping.html', 
                              input_devices = input_devices,
                              mapping_functions = mapping_functions,
-                             output_devices = output_devices)
+                             output_devices = output_devices,
+                             input_devices_id = input_devices_id,
+                             mapping_functions_id = mapping_functions_id,
+                             output_devices_id = output_devices_id,
+                             feature_id = feature_id)
 
 
 @app.route('/connection', methods=['POST','GET'])
 def connection():
     input_feature_SQL = """   
-                          SELECT df_name FROM DeviceFeature
+                          SELECT df_id FROM DeviceFeature
                           LEFT JOIN ModelFeature USING (df_id)
                           LEFT JOIN Device USING (dm_id)
-                          WHERE type='input' and u_id=1 and ld_name='{0}';
+                          WHERE type='input' and u_id=1 and ld_id='{0}';
                        """
     output_feature_SQL = """   
-                           SELECT df_name FROM DeviceFeature
+                           SELECT df_id FROM DeviceFeature
                            LEFT JOIN ModelFeature USING (df_id)
                            LEFT JOIN Device USING (dm_id)
-                           WHERE type='output' and u_id=1 and ld_name='{0}';
+                           WHERE type='output' and u_id=1 and ld_id='{0}';
                         """
     input_device_SQL = """   
-                          SELECT ld_name FROM Device
+                          SELECT ld_id FROM Device
                           LEFT JOIN ModelFeature USING (dm_id)
                           LEFT JOIN DeviceFeature USING (df_id)
                           WHERE type='input' and u_id=1;
                        """
     output_device_SQL = """   
-                           SELECT ld_name FROM Device
+                           SELECT ld_id FROM Device
                            LEFT JOIN ModelFeature USING (dm_id)
                            LEFT JOIN DeviceFeature USING (df_id)
                            WHERE type='output' and u_id=1;
@@ -133,18 +142,8 @@ def connection():
     input_feature = []
     output_feature = []
     
-    # choose the outter checkbox
+    # choose the checkbox
     input_device_list = sql_query(input_device_SQL).split('\n')
-    for i in request.form.getlist('input_device[]'):
-        result = sql_query(input_feature_SQL.format(i)).split('\n')
-        input_device_list.remove(i)
-        for j in result:
-            if j:
-               input_feature.append(j)
-        input_devices.update({i: input_feature})
-        input_feature = []
-
-    # choose only some of the inner checkbox
     for i in input_device_list:
         if i:
             input_feature = request.form.getlist('input_' + i + '[]')
@@ -156,18 +155,8 @@ def connection():
     # choose mapping functions
     mapping_functions = request.form.getlist('mapping_function[]')
     
-    # choose the outter checkbox
+    # choose the checkbox
     output_device_list = sql_query(output_device_SQL).split('\n')
-    for i in request.form.getlist('output_device[]'):
-        result = sql_query(output_feature_SQL.format(i)).split('\n')
-        output_device_list.remove(i)
-        for j in result:
-            if j:
-                output_feature.append(j)
-        output_devices.update({i: output_feature})
-        output_feature = []
-    
-    # choose only some of the inner checkbox
     for i in output_device_list:
         if i:
             output_feature = request.form.getlist('output_' + i + '[]')
