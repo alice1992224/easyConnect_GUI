@@ -111,94 +111,139 @@ def device_mapping():
 
 @app.route('/connection', methods=['POST','GET'])
 def connection():
-    input_feature_SQL = """   
-                          SELECT df_id FROM DeviceFeature
-                          LEFT JOIN ModelFeature USING (df_id)
-                          LEFT JOIN Device USING (dm_id)
-                          WHERE type='input' and u_id=1 and ld_id='{0}';
-                       """
-    output_feature_SQL = """   
-                           SELECT df_id FROM DeviceFeature
-                           LEFT JOIN ModelFeature USING (df_id)
-                           LEFT JOIN Device USING (dm_id)
-                           WHERE type='output' and u_id=1 and ld_id='{0}';
-                        """
-    input_device_SQL = """   
-                          SELECT ld_id FROM Device
-                          LEFT JOIN ModelFeature USING (dm_id)
-                          LEFT JOIN DeviceFeature USING (df_id)
-                          WHERE type='input' and u_id=1;
-                       """
-    output_device_SQL = """   
-                           SELECT ld_id FROM Device
-                           LEFT JOIN ModelFeature USING (dm_id)
-                           LEFT JOIN DeviceFeature USING (df_id)
-                           WHERE type='output' and u_id=1;
-                        """
+    device_id_name_SQL = """   
+                             SELECT ld_id, ld_name FROM Device
+                             LEFT JOIN ModelFeature USING (dm_id)
+                             LEFT JOIN DeviceFeature USING (df_id)
+                             WHERE u_id=1;
+                          """
+    function_id_name_SQL = """
+                              SELECT mf_id, mf_name FROM MappingFunc
+                              WHERE u_id=1;
+                           """
+    feature_id_name_SQL = """   
+                              SELECT df_id, df_name FROM DeviceFeature;
+                           """
+    device_output_template = "{0}({1})"
 
-    input_devices = {}
-    mapping_functions = []
-    output_devices = {}
-    input_feature = []
-    output_feature = []
+    function_output_template = "{0}"
+
+    device_id_name_list = list(filter(None, sql_query(device_id_name_SQL).split("\n")))
+    function_id_name_list = list(filter(None, sql_query(function_id_name_SQL).split("\n")))
+    feature_id_name_list = list(filter(None, sql_query(feature_id_name_SQL).split("\n")))
     
-    # choose the checkbox
-    input_device_list = sql_query(input_device_SQL).split('\n')
-    for i in input_device_list:
-        if i:
+    device_id_name_mapping = {}
+    function_id_name_mapping = {}
+    feature_id_name_mapping = {}
+    for i in device_id_name_list:
+        data = i.split("\t")
+        device_id_name_mapping.update({data[0]:data[1]})
+    for i in function_id_name_list:
+        data = i.split("\t")
+        function_id_name_mapping.update({data[0]:data[1]})
+    for i in feature_id_name_list:
+        data = i.split("\t")
+        feature_id_name_mapping.update({data[0]:data[1]})
+
+    if request.method == 'POST':
+        input_feature_SQL = """   
+                              SELECT df_id FROM DeviceFeature
+                              LEFT JOIN ModelFeature USING (df_id)
+                              LEFT JOIN Device USING (dm_id)
+                              WHERE type='input' and u_id=1 and ld_id='{0}';
+                            """
+        output_feature_SQL = """   
+                               SELECT df_id FROM DeviceFeature
+                               LEFT JOIN ModelFeature USING (df_id)
+                               LEFT JOIN Device USING (dm_id)
+                               WHERE type='output' and u_id=1 and ld_id='{0}';
+                             """
+        input_device_SQL = """   
+                              SELECT ld_id FROM Device
+                              LEFT JOIN ModelFeature USING (dm_id)
+                              LEFT JOIN DeviceFeature USING (df_id)
+                              WHERE type='input' and u_id=1;
+                           """
+        output_device_SQL = """   
+                               SELECT ld_id FROM Device
+                               LEFT JOIN ModelFeature USING (dm_id)
+                               LEFT JOIN DeviceFeature USING (df_id)
+                               WHERE type='output' and u_id=1;
+                            """
+
+        input_devices = {}
+        mapping_functions = []
+        output_devices = {}
+        input_feature = []
+        output_feature = []
+        
+        # choose the checkbox
+        input_device_list = list(filter(None, sql_query(input_device_SQL).split('\n')))
+        for i in input_device_list:
             input_feature = request.form.getlist('input_' + i + '[]')
             if input_feature:
                 input_devices.update({i: input_feature})
             else:
                 continue
 
-    # choose mapping functions
-    mapping_functions = request.form.getlist('mapping_function[]')
-    
-    # choose the checkbox
-    output_device_list = sql_query(output_device_SQL).split('\n')
-    for i in output_device_list:
-        if i:
+        # choose mapping functions
+        mapping_functions = request.form.getlist('mapping_function[]')
+        
+        # choose the checkbox
+        output_device_list = list(filter(None, sql_query(output_device_SQL).split('\n')))
+        for i in output_device_list:
             output_feature = request.form.getlist('output_' + i + '[]')
             if output_feature:
                 output_devices.update({i: output_feature})
             else:
                 continue
 
-    ##########################
-    str_input = []
-    str_mapping = mapping_functions
-    str_output = []
-    i_len = 0
-    o_len = 0
-    m_len = len(mapping_functions)
-    # id_id
-    for i in input_devices.keys():
-        for j in input_devices[i]:
-            i_len += 1
-            str_input.append(str(i) + '_' + str(j))
-    # id_id
-    for i in output_devices.keys():
-        for j in output_devices[i]:
-            o_len += 1 
-            str_output.append(str(i) + '_' + str(j))
-    max_len = max(i_len, o_len, m_len)
-    if i_len < max_len:
-        for i in range(max_len-i_len):
-            str_input.append('empty')
-    if o_len < max_len:
-        for i in range(max_len-o_len):
-            str_output.append('empty')
-    if m_len < max_len:
-        for i in range(max_len-m_len):
-            str_mapping.append('empty')
-
-    return render_template('connection.html',
-                            max_len = max_len,
-                            str_input = str_input,
-                            str_mapping = str_mapping,
-                            str_output = str_output)
-
+        str_input = []
+        str_mapping = mapping_functions
+        str_output = []
+        str_in_name = []
+        str_out_name = []
+        str_mapping_name = []
+        i_len = 0
+        o_len = 0
+        m_len = len(mapping_functions)
+        # id_id
+        for i in input_devices.keys():
+            for j in input_devices[i]:
+                i_len += 1
+                str_input.append('i_' + str(i) + '_' + str(j))
+                str_in_name.append(device_output_template.format(device_id_name_mapping[str(i)], feature_id_name_mapping[str(j)]))
+                
+        # id_id
+        for i in output_devices.keys():
+            for j in output_devices[i]:
+                o_len += 1 
+                str_output.append('o_' + str(i) + '_' + str(j))
+                str_out_name.append(device_output_template.format(device_id_name_mapping[str(i)], feature_id_name_mapping[str(j)]))
+       
+        for i in mapping_functions:
+            str_mapping_name.append(function_output_template.format(function_id_name_mapping[i]))
+        
+        max_len = max(i_len, o_len, m_len)
+        if i_len < max_len:
+            for i in range(max_len-i_len):
+                str_input.append('empty')
+        if o_len < max_len:
+            for i in range(max_len-o_len):
+                str_output.append('empty')
+        if m_len < max_len:
+            for i in range(max_len-m_len):
+                str_mapping.append('empty')
+        return render_template('connection.html',
+                                max_len = max_len,
+                                str_input = str_input,
+                                str_mapping = str_mapping,
+                                str_output = str_output,
+                                str_in_name = str_in_name,
+                                str_out_name = str_out_name,
+                                str_mapping_name = str_mapping_name)
+    if request.method == 'GET':
+       print("gg") 
 #################### main ####################
 def main():
     if not os.path.exists(UPLOAD_DIR):
