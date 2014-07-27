@@ -124,7 +124,10 @@ def handle_connection():
     sql = 'INSERT INTO Connection (ld_id, df_id, mf_id, u_id, p_id) VALUES '
     for i in range(length):
         connect_str = request.form.get('connect'+str(i))
-        m = re.match('([i,o])_(\d)_(\d);(\d)', connect_str)
+        print(connect_str)
+        m = re.match('([i,o])_(\d+)_(\d+);(\d+)', connect_str)
+        if(m == None):
+            print('none')
         d_type = m.group(1)
         did = m.group(2)
         fid = m.group(3)

@@ -93,13 +93,11 @@
                 <div id="stage">
                 {% for index in range(max_len) %}
                     {% if str_input[index]!='empty' %}
-                        <!-- <a href="javascript:;" id='in_device' class="button cell">{{str_input[index]}}</a> -->
                         <a href="javascript:;" id='in_device' class="button cell">{{device_in_name[index]}}<br/>{{feature_in_name[index]}}</a>
                     {% else %}
                         <a href="javascript:;" id='in_device' class="button cell" style="visibility: hidden;"></a>
                     {% endif %}
                     {% if str_mapping[index]!='empty' %}
-                        <!-- <a href="javascript:;" id='map_func' class="button cell">{{str_mapping[index]}}</a> -->
                         <a href="javascript:;" id='map_func' class="button cell">{{str_mapping_name[index]}}</a>
                     {% else %}
                         <a href="javascript:;" id='map_func' class="button cell" style="visibility: hidden;"></a>
