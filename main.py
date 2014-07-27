@@ -5,6 +5,7 @@ import os
 import os.path
 import urllib.parse
 import subprocess
+import re
 
 from flask import Flask
 from flask import redirect
@@ -24,7 +25,7 @@ error = app.logger.error
 
 
 #################### settings ####################
-HOST, PORT = '0.0.0.0', 7788
+HOST, PORT = '0.0.0.0', 1235
 UPLOAD_DIR = './upload/'
 DEBUG = True
 
@@ -108,9 +109,36 @@ def device_mapping():
                              output_devices_id = output_devices_id,
                              feature_id = feature_id)
 
-
-@app.route('/connection', methods=['POST','GET'])
+@app.route('/connection', methods=['GET'])
 def connection():
+    return render_template('main.html')
+
+@app.route('/handle_connection', methods=['POST'])
+def handle_connection():
+
+    length = int(request.form.get('connectLength'))
+
+    sql = 'DELETE from Connection where p_id = 1;'
+    sql_query(sql)
+
+    sql = 'INSERT INTO Connection (ld_id, df_id, mf_id, u_id, p_id) VALUES '
+    for i in range(length):
+        connect_str = request.form.get('connect'+str(i))
+        m = re.match('([i,o])_(\d)_(\d);(\d)', connect_str)
+        d_type = m.group(1)
+        did = m.group(2)
+        fid = m.group(3)
+        mid = m.group(4)
+        sql += '("%s", "%s", "%s", "%s", "%s"),'%(did, fid, mid, 1, 1)
+    sql = sql[:-1]+';'
+    print(sql)
+    sql_query(sql)
+    return render_template('main.html')
+    
+    
+
+@app.route('/connection_v2', methods=['POST','GET'])
+def connection_v2():
     device_id_name_SQL = """   
                              SELECT ld_id, ld_name FROM Device
                              LEFT JOIN ModelFeature USING (dm_id)
@@ -124,13 +152,17 @@ def connection():
     feature_id_name_SQL = """   
                               SELECT df_id, df_name FROM DeviceFeature;
                            """
-    device_output_template = "{0}({1})"
-
+    device_output_template = "{0}"
     function_output_template = "{0}"
 
     device_id_name_list = list(filter(None, sql_query(device_id_name_SQL).split("\n")))
     function_id_name_list = list(filter(None, sql_query(function_id_name_SQL).split("\n")))
     feature_id_name_list = list(filter(None, sql_query(feature_id_name_SQL).split("\n")))
+    """
+    print(device_id_name_list)
+    print(function_id_name_list)
+    print(feature_id_name_list)
+    """
     
     device_id_name_mapping = {}
     function_id_name_mapping = {}
@@ -144,6 +176,12 @@ def connection():
     for i in feature_id_name_list:
         data = i.split("\t")
         feature_id_name_mapping.update({data[0]:data[1]})
+
+    """
+    print(device_id_name_mapping)
+    print(function_id_name_mapping)
+    print(feature_id_name_mapping)
+    """
 
     if request.method == 'POST':
         input_feature_SQL = """   
@@ -179,6 +217,7 @@ def connection():
         
         # choose the checkbox
         input_device_list = list(filter(None, sql_query(input_device_SQL).split('\n')))
+        print(input_device_list)
         for i in input_device_list:
             input_feature = request.form.getlist('input_' + i + '[]')
             if input_feature:
@@ -201,8 +240,10 @@ def connection():
         str_input = []
         str_mapping = mapping_functions
         str_output = []
-        str_in_name = []
-        str_out_name = []
+        device_in_name = []
+        feature_in_name = []
+        device_out_name = []
+        feature_out_name = []
         str_mapping_name = []
         i_len = 0
         o_len = 0
@@ -212,14 +253,17 @@ def connection():
             for j in input_devices[i]:
                 i_len += 1
                 str_input.append('i_' + str(i) + '_' + str(j))
-                str_in_name.append(device_output_template.format(device_id_name_mapping[str(i)], feature_id_name_mapping[str(j)]))
+                device_in_name.append(device_output_template.format(device_id_name_mapping[str(i)]))
+                feature_in_name.append(feature_id_name_mapping[str(j)])
                 
         # id_id
         for i in output_devices.keys():
             for j in output_devices[i]:
                 o_len += 1 
                 str_output.append('o_' + str(i) + '_' + str(j))
-                str_out_name.append(device_output_template.format(device_id_name_mapping[str(i)], feature_id_name_mapping[str(j)]))
+                device_in_name.append(device_output_template.format(device_id_name_mapping[str(i)]))
+                device_out_name.append(device_output_template.format(device_id_name_mapping[str(i)]))
+                feature_out_name.append(feature_id_name_mapping[str(j)])
        
         for i in mapping_functions:
             str_mapping_name.append(function_output_template.format(function_id_name_mapping[i]))
@@ -234,16 +278,23 @@ def connection():
         if m_len < max_len:
             for i in range(max_len-m_len):
                 str_mapping.append('empty')
+        print(device_in_name)
+        print(feature_in_name)
+        print(device_out_name)
+        print(feature_out_name)
         return render_template('connection.html',
                                 max_len = max_len,
                                 str_input = str_input,
                                 str_mapping = str_mapping,
                                 str_output = str_output,
-                                str_in_name = str_in_name,
-                                str_out_name = str_out_name,
+                                device_in_name = device_in_name,
+                                feature_in_name = feature_in_name,
+                                deivce_out_name = device_out_name,
+                                feature_out_name = feature_out_name,
                                 str_mapping_name = str_mapping_name)
     if request.method == 'GET':
        print("gg") 
+
 #################### main ####################
 def main():
     if not os.path.exists(UPLOAD_DIR):
