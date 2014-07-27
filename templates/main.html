@@ -23,8 +23,6 @@
         var connectList = [];
         var ctx = document.getElementById("background").getContext("2d");
 
-        
-
         function draw_all_connect(){
 
             // clear canvas
@@ -48,6 +46,32 @@
             }
             console.log(connectList); 
         }
+
+        // draw all connection when reload
+        {% for connect in test %}
+
+            var start_block = $('.{{connect[0]}}');
+            var end_block = $('.{{connect[1]}}');
+            var end_x = start_block.position().left + (start_block.outerWidth(true)/2);
+            var end_y = start_block.position().top + (start_block.outerHeight(true)/2);
+            var start_x = end_block.position().left + (end_block.outerWidth(true)/2);
+            var start_y = end_block.position().top + (end_block.outerHeight(true)/2);
+            var block_width = $('a#in_device').width();
+
+            if(start_x > end_x){
+                start_x  = start_x - block_width/2+4;
+                end_x  = end_x + block_width/2-4;
+            }
+            if(start_x < end_x){
+                start_x  = start_x + block_width/2-4;
+                end_x  = end_x - block_width/2+4;
+            }
+            var arr =[ start_block.attr('value'), end_block.attr('value'), start_x, start_y, end_x, end_y ];
+            connectList.push(arr);
+            console.log('{{connect[0]}}'); 
+        {% endfor %}
+        draw_all_connect();
+
 
         function undo(){
             draw_all_connect();
