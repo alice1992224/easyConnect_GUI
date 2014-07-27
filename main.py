@@ -25,7 +25,7 @@ error = app.logger.error
 
 
 #################### settings ####################
-HOST, PORT = '0.0.0.0', 1235
+HOST, PORT = '0.0.0.0', 8899
 UPLOAD_DIR = './upload/'
 DEBUG = True
 
@@ -111,7 +111,33 @@ def device_mapping():
 
 @app.route('/connection', methods=['GET'])
 def connection():
-    return render_template('main.html')
+    get_in_connection_sql = """
+                                SELECT ld_id, df_id, mf_id FROM Connection
+                                LEFT JOIN DeviceFeature USING (df_id)
+                                WHERE u_id=1 and p_id=1 and type='input';
+                            """
+    get_out_connection_sql = """
+                                SELECT ld_id, df_id, mf_id FROM Connection
+                                LEFT JOIN DeviceFeature USING (df_id)
+                                WHERE u_id=1 and p_id=1 and type='output';
+                            """
+    in_connection_list = list(filter(None, sql_query(get_in_connection_sql).split("\n")))
+    out_connection_list = list(filter(None, sql_query(get_out_connection_sql).split("\n")))
+
+    connection = [] 
+    for i in in_connection_list:
+        data = i.split("\t")
+        first = "i_" + str(data[0]) + "_" + str(data[1])
+        second = "m_" + str(data[2])
+        connection.append([first, second])
+    
+    for i in out_connection_list:
+        data = i.split("\t")
+        first = "o_" + str(data[0]) + "_" + str(data[1])
+        second = "m_" + str(data[2])
+        connection.append([first, second])
+                             
+    return render_template('main.html', connection = connection)
 
 @app.route('/handle_connection', methods=['POST'])
 def handle_connection():
