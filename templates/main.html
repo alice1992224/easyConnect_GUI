@@ -48,7 +48,7 @@
         }
 
         // draw all connection when reload
-        {% for connect in test %}
+        {% for connect in connections %}
 
             var start_block = $('.{{connect[0]}}');
             var end_block = $('.{{connect[1]}}');
@@ -77,6 +77,11 @@
             draw_all_connect();
         }
 
+
+        $('button#clear').on('click', function(e){
+            connectList = [];
+            draw_all_connect();
+        });
 
         $('button#submit').on('click', function(e){
 
@@ -120,6 +125,16 @@
             form.submit();
         });
 
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+
 
         $('body').on('click', '#stage .cell', function(e){
 
@@ -129,7 +144,6 @@
             }
             else {
                 var last_clicked = $($('.cell.clicked').get(0));
-
                 var end_x = $(this).position().left + ($(this).outerWidth(true)/2);
                 var end_y = $(this).position().top + ($(this).outerHeight(true)/2);
                 var start_x = last_clicked.position().left + (last_clicked.outerWidth(true)/2);
@@ -199,16 +213,15 @@
         <li>
             <img src="../static/W4ssnp8.jpg" alt="" style="vertical-align: middle; margin-top: -1px" height="40" width="40">
         </li>
-        <li><a href="../static/main.html">EasyConnect</a> »</li>
+        <li><a href="connection">EasyConnect</a> »</li>
       </ul>
     </div>
     <div class="col-xs-4 col-sm-2 sphinxsidebar" style="height:100%; background-color:#d4dee6; padding-top:30px; padding-left:10px">
     <h3>Project List</h3>
     <ul>
-        <li><a href="../static/choose_device.html">Chinese Art</a></li>
-        <li><a href="">Fire Life</a></li>
-        <li><a href="">Crazy wind</a></li>
-        <li><a href="" style="font-family: 'Lucida Grande', Arial, sans-serif; font-size: 1.2em; color: #000000;"><br>+ new project</a></li>
+        <li><a style="font-size:18px; font-weight:bold" href="connection"> - Chinese Art</a></li>
+        <li><a style="font-size:18px; font-weight:bold" href="">Fire Life</a></li>
+        <li><a style="font-size:18px; font-weight:bold" href="">Crazy wind</a></li>
     </ul>
     </div>
 
@@ -216,6 +229,7 @@
         <div class="container">
             <fieldset>
                 <legend style="font-size: 250%;">Connection Edit
+                <button id="clear" style="margin-left:10px; width:55px; height:30px; font-size:16; float:right; margin-top:10px">Clear</button>
                 <button id="submit" style="width:50px; height:30px; font-size:16; float:right; margin-top:10px">Save</button>
                 </legend>
             </fieldset>
@@ -227,9 +241,9 @@
             <div id="game_area">
                 <div id="stage">
 
-                    <a href="javascript:;" id='in_device' class="button cell i_11_2" value="i_11_2">Smartphone-G-sensor<br/>triaxial_accelerometer</a>
+                    <a id='in_device' class="button cell i_11_2" value="i_11_2">Smartphone-G-sensor<br/>triaxial_accelerometer</a>
                     <a href="javascript:;" id='map_func' class="button cell m_1" value="1" >linear</a>
-                    <a href="javascript:;" id='out_device' class="button cell o_2_1" value="o_2_1">Fire (Bulb)<br/>lightness</a>
+                    <a href="javascript:;" id='out_device' class="button cell o_6_1" value="o_6_1">Fire (Bulb)<br/>lightness</a>
 
                     <a href="javascript:;" id='in_device' class="button cell i_1_3" value="i_1_3">Smartphone-Microphone<br/>volume</a>
                     <a href="javascript:;" id='map_func' class="button cell m_2" value="2">threshold</a>
